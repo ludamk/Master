@@ -8,7 +8,7 @@ import adaptiveHexagonMesh
 
 #################################### Simple Fire ####################################
 ################### Constants
-# Surface: r(u1,u2) = c1*u1 + c2*u2
+# Surface: r(u1,u2) = [u1, u2, c1*u1 + c2*u2]
 c1 = 2
 c2 = 3
 
@@ -17,8 +17,10 @@ angles = 4
 fullAngle = np.pi/3
 thetaAll = np.linspace(0, fullAngle, angles, endpoint=False)
 
-# Fire constants
+# Ignition point
 ignitionPoint = np.array([0,0])
+
+# Time-unit before a fire is extinguished on a node
 extinguishFactor = 1
 errVal = 0.01
 
@@ -39,6 +41,7 @@ def findWeights(p1,p2,xrange,yrange):
         (p2[0] < xrange[0] or p2[0] > xrange[1] or p2[1] < yrange[0] or p2[1] > yrange[1])):
         return 0  # Return 0 if both points are outside region
     else:
+        # Analytical expression for the length
         deltaX = p2[0]-p1[0]
         deltaY = p2[1]-p1[1]
         
@@ -46,6 +49,7 @@ def findWeights(p1,p2,xrange,yrange):
         
         return np.sqrt(C)
 
+# Induced metric for r
 def G(u1,u2):
     g11 = c1**2 + 1
     g12 = c1*c2
@@ -117,3 +121,4 @@ ax.set_xlabel(r'$u_1$', fontsize=20)
 ax.set_ylabel(r'$u_2$', fontsize=20)
 ax.tick_params(labelsize=18)
 ax.grid(True)
+
